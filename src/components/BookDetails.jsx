@@ -10,8 +10,12 @@ function BookDetails() {
 
     useEffect(() => {
 
-
-        axios.get(`http://localhost:3000/book/${id}`).then((data) => {
+        let token = localStorage.getItem('token')
+        axios.get(`http://localhost:3000/book/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((data) => {
 
             console.log(data.data.data);
             setBook(data.data.data)
@@ -27,15 +31,17 @@ function BookDetails() {
 
     return (
         <>
-            <Link to={'/'}>
-                <button
+            <div className='m-5 ms-12 lg:ms-36'>
+                <Link to={'/'}>
+                    <button
 
-                    className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
-                >
-                    <span>←</span>
-                    <span>Back</span>
-                </button>
-            </Link>
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
+                    >
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                </Link>
+            </div>
 
             <div className="max-w-2xl mx-auto mt-10 bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">

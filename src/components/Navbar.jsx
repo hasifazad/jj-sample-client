@@ -1,6 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+
+
+    let navigate = useNavigate()
+    function logout() {
+        localStorage.removeItem('token')
+        navigate('/login')
+    }
 
     return (
         <>
@@ -12,7 +19,7 @@ export default function Navbar() {
                         to="/"
                         className="flex items-center gap-2 text-xl font-bold text-gray-800"
                     >
-                       
+
                         <span>BookStore</span>
                     </Link>
 
@@ -25,12 +32,12 @@ export default function Navbar() {
                             Home
                         </Link>
 
-                        <Link
-                            to="/book/new"
+                        <button onClick={logout}
+
                             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                         >
-                            + Add Book
-                        </Link>
+                            LOGOUT
+                        </button>
                     </div>
                 </div>
             </nav>

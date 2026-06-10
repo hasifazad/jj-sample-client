@@ -4,11 +4,30 @@ import BookDetails from "./components/BookDetails";
 import CreateBook from "./components/CreateBook";
 import UpdateBook from "./components/updateBook";
 import Navbar from "./components/Navbar";
+import React from "react";
+import Login from "./components/Login";
+
+
+
+function Test({ num, children }) {
+  console.log(num);
+  console.log(children);
+
+
+  return (
+    <>
+      <h1>TEST {num}</h1>
+      {children}
+    </>
+  )
+}
 
 export default function App() {
 
   return (
     <>
+
+
 
       <BrowserRouter>
         <Navbar />
@@ -17,6 +36,7 @@ export default function App() {
           <Route path={"/book/:id"} element={<BookDetails />} />
           <Route path={"/book/new"} element={<CreateBook />} />
           <Route path={"/book/update/:id"} element={<UpdateBook />} />
+          <Route path={"/login"} element={<Login />} />
 
 
 

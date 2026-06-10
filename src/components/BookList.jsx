@@ -1,23 +1,36 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function BookList() {
 
     let [books, setBooks] = useState([])
     let [del, setDel] = useState(false)
 
+
+
+    let navigate = useNavigate()
     useEffect(() => {
 
+        let token = localStorage.getItem('token')
+        console.log(token);
 
-        axios.get('http://localhost:3000/book').then((data) => {
+        axios.get('http://localhost:3000/book', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((data) => {
 
             console.log(data.data.data);
             setBooks(data.data.data)
 
 
         }).catch((err) => {
-            console.log(err);
+            console.log(err.response);
+
+            if (err.response.status == 401) {
+                navigate('/login')
+            }
 
         })
 
@@ -65,58 +78,65 @@ export default function BookList() {
 
     return (
         <>
-            <Link to="/book/new">
-                <button className="px-5 py-2.5 bg-blue-500 text-white font-medium rounded-lg shadow-sm hover:bg-blue-600 hover:shadow-md transition-all duration-200 cursor-pointer">
-                    + Create Book
-                </button>
-            </Link>
-            {
-                books.map((book, i) => {
 
-                    return (
+            <div className="flex p-5 justify-end lg:mx-32">
+                <Link to="/book/new">
+                    <button className="px-5 py-2.5 bg-blue-500 text-white font-medium rounded-lg shadow-sm hover:bg-blue-600 hover:shadow-md transition-all duration-200 cursor-pointer">
+                        + Create Book
+                    </button>
+                </Link>
+            </div>
 
-                        <div
-                            key={i}
-                            className="max-w-sm bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-5"
-                        >
-                            <div className="space-y-2">
-                                <h2 className="text-xl font-semibold text-gray-800">
-                                    {book.title}
-                                </h2>
 
-                                <p className="text-gray-600">
-                                    By <span className="font-medium">{book.author}</span>
-                                </p>
+            <div className="flex gap-5 m-5 lg:mx-36">
+                {
+                    books.map((book, i) => {
 
-                                <p className="text-lg font-bold text-blue-600">
-                                    ₹{book.price}
-                                </p>
-                            </div>
+                        return (
 
-                            <div className="flex gap-2 mt-5">
-                                <Link to={`/book/${book._id}`}>
-                                    <button className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
-                                        View
+                            <div
+                                key={i}
+                                className="max-w-sm bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-5"
+                            >
+                                <div className="space-y-2">
+                                    <h2 className="text-xl font-semibold text-gray-800">
+                                        {book.title}
+                                    </h2>
+
+                                    <p className="text-gray-600">
+                                        By <span className="font-medium">{book.author}</span>
+                                    </p>
+
+                                    <p className="text-lg font-bold text-blue-600">
+                                        ₹{book.price}
+                                    </p>
+                                </div>
+
+                                <div className="flex gap-2 mt-5">
+                                    <Link to={`/book/${book._id}`}>
+                                        <button className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
+                                            View
+                                        </button>
+                                    </Link>
+
+                                    <Link to={`/book/update/${book._id}`}>
+                                        <button className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-500 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer">
+                                            Update
+                                        </button>
+                                    </Link>
+
+                                    <button
+                                        onClick={() => deleteBook(book._id)}
+                                        className="px-4 py-2 text-sm font-medium text-red-600 border border-red-500 rounded-lg hover:bg-red-50 transition-colors cursor-pointer"
+                                    >
+                                        Delete
                                     </button>
-                                </Link>
-
-                                <Link to={`/book/update/${book._id}`}>
-                                    <button className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-500 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer">
-                                        Update
-                                    </button>
-                                </Link>
-
-                                <button
-                                    onClick={() => deleteBook(book._id)}
-                                    className="px-4 py-2 text-sm font-medium text-red-600 border border-red-500 rounded-lg hover:bg-red-50 transition-colors cursor-pointer"
-                                >
-                                    Delete
-                                </button>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })
-            }
+                        )
+                    })
+                }
+            </div>
 
         </>
     )

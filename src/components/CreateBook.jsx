@@ -42,7 +42,12 @@ function CreateBook() {
 
 
         }).catch((err) => {
-            console.log(err);
+            console.log(err.response);
+
+            if(err.response.status===401){
+                alert("invalid token. Please Login again")
+
+            }
 
         })
 
