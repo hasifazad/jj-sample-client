@@ -1,11 +1,14 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../App'
 
 function Login() {
 
     let [email, setEmail] = useState('')
     let [password, setPassword] = useState('')
+
+    let { setUserInfo } = useContext(UserContext)
 
     let navigate = useNavigate()
 
@@ -33,10 +36,10 @@ function Login() {
 
         try {
             let response = await axios.post('http://localhost:3000/user/login', data)
-            console.log(response.data.token);
+            console.log(response.data);
 
             localStorage.setItem('token', response.data.token)
-
+            setUserInfo(response.data.data)
 
             if (response.status === 200) {
 

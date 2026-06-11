@@ -1,6 +1,11 @@
+import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 
 export default function Navbar() {
+
+    let { userInfo } = useContext(UserContext)
+    console.log(userInfo);
 
 
     let navigate = useNavigate()
@@ -22,6 +27,10 @@ export default function Navbar() {
 
                         <span>BookStore</span>
                     </Link>
+
+
+                    <h1>{userInfo?.username}</h1>
+                    <h1>{userInfo?.email}</h1>
 
                     {/* Navigation Links */}
                     <div className="flex items-center gap-4">

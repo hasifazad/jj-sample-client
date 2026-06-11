@@ -4,46 +4,41 @@ import BookDetails from "./components/BookDetails";
 import CreateBook from "./components/CreateBook";
 import UpdateBook from "./components/updateBook";
 import Navbar from "./components/Navbar";
-import React from "react";
+import React, { createContext, useState } from "react";
 import Login from "./components/Login";
 
 
 
-function Test({ num, children }) {
-  console.log(num);
-  console.log(children);
-
-
-  return (
-    <>
-      <h1>TEST {num}</h1>
-      {children}
-    </>
-  )
-}
+export let UserContext = createContext()
 
 export default function App() {
 
+
+  let [userInfo, setUserInfo] = useState()
+
+
   return (
     <>
 
 
+      <UserContext.Provider value={{ userInfo, setUserInfo }}>
 
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path={"/"} element={<BookList />} />
-          <Route path={"/book/:id"} element={<BookDetails />} />
-          <Route path={"/book/new"} element={<CreateBook />} />
-          <Route path={"/book/update/:id"} element={<UpdateBook />} />
-          <Route path={"/login"} element={<Login />} />
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path={"/"} element={<BookList />} />
+            <Route path={"/book/:id"} element={<BookDetails />} />
+            <Route path={"/book/new"} element={<CreateBook />} />
+            <Route path={"/book/update/:id"} element={<UpdateBook />} />
+            <Route path={"/login"} element={<Login />} />
 
 
 
-        </Routes>
+          </Routes>
 
-      </BrowserRouter>
+        </BrowserRouter>
 
+      </UserContext.Provider>
     </>
   )
 
